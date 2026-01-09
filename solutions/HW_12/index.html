@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HW 12 template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <script src="cnnutil.js"></script>
+    <script src="convnet.js"></script>
+    <script src="deepqlearn.js"></script>
+    <script src="sketch.js"></script>
+  </head>
+  <body>
+  <h2>Week 12 Neural Q-Learning</h2>
+  
+  <h3>Introduction</h3>
+  <p>This week we combine reinforcement learning with neural networks.  The important changes relative to last week are that
+    <br>(a) the state space is now continuous, rather than discrete and
+    <br>(b) Q values are estimated using a neural network, rather than a table.
+  </p>
+  <p>
+  For this exercise, we will use a simple video game scenario, where the goal is
+  to move a paddle left and right catch green pellets and avoid red pellets.
+  We follow the general approach given in this week's reading assingment:
+  <a href="http://www.life.illinois.edu/mcb/419/pdf/Mnih15_529-533.pdf">
+    Mnih V, et al. (2015) Human Level Control Through Deep Reinforcement Learning. Nature 518, 539-533</a>.
+   We will use the neural net library and reinforcement learning module documented here:
+   <a href="http://cs.stanford.edu/people/karpathy/convnetjs/demo/rldemo.html">ConvNetJS: Deep Q Learning Demo</a>
+  </p>
+  <p style="font-size: 80%">
+    <b>Pellets:</b> red value = -1; green value = +1
+    <br><b>Left/Right Sensors:</b> at each end of the paddle; provide information about distance to red and green pellets
+    <br><b>Sensor values:</b> computed as (30/dist); e.g., an object 30 pixels away has a value of 1
+    <br><b>Actions:</b> the bot has 3 actions; 0 = move left, 1 = move right; 2 = stop
+    <br><b>Network input:</b> the four sensor values [leftRed, leftGreen, rightRed, rightGreen]
+    <br><b>Network output:</b> estimated Q values for the 3 possible actions
+    <br><b>Network internal layers:</b> you decide    
+    <br>&nbsp;
+  </p>
+  <div id="canvas"></div>
+<div id="status" style="color: blue; margin-bottom: 20px"></div>
+  <div id="gui"></div>
+  <h3>Instructions</h3>
+  <p> First, select "randAction" and click the "run series" button.  Look in the results table and you should see a value around 8-9. 
+  </p>
+  <p>Before you can use reinforcement learning, you have to design your neural network by editing the code in the function
+  <b>resetBrain</b> found in <b>sketch.js</b>.
+  In particular, you'll need to specify one or more hidden layers, the number of neurons per layer, the type of activation function
+  in each layer ('relu', 'sigmoid', or 'tanh'). You may also want to change the associated parameters (epsilon, gamma, learning rate, batch_size, l2_decay, etc.) 
+  Note that <b>batch_size</b> has a big effect on the update rate... if you set it too large your simulation will run very slowly.
+   You'll probably want to repeat the training series multiple times until the 
+  performance is no longer improving.
+  Then you should select "testing" and then click "run series" to measure the final performance.
+  </p>
+  <p style="color:green"><b>NOTES:</b>
+    <br>Your target performance should be above 20.
+    <br>Save your best network directly into your HTML file by first clicking the "Save Network" button below, then copy-and-paste the network description from the textbox into the corresponding textarea section near the bottom of your HTML file.</p>
+
+ <h3>Questions:</h3>
+ <b>(provide answers in the body of your email, or in the HTML file, whichever you prefer)</b>
+ <ol>
+  <li>Did you remember to save your best network into your HTML file before submission?
+    <br><user>yes</user>
+   </li>
+  <li>What was the average fitness that you achieved for your best network?
+    <br><user>34.7</user>
+  </li>
+  <li>How many training trials did it take to achieve this performance?
+    <br><user>3 rounds of 50 trial</user>
+  </li>
+  <li>Briefly describe the network architecture that you found to be most effective(e.g., #layers, #neurons, activation functions).
+    <br><user>a single hidden layer, 8 neurons, tanh activation<br>
+    many other architectures produced similar performance results</user>
+  </li>
+   <li>Describe any changes that you made to the other learning parameters (the "opt" values).
+     <br><user>no changes</user>
+  </li>
+  </ol>
+
+  <h3>Results Table</h3>
+  <table>
+    <tr><th>Controller</th><th>Fitness<br><small>mean (std dev)</small></th></tr>
+    <tbody id="table">
+    </tbody>
+  </table>
+  <h3>Load / Save network</h3>
+  <p>These buttons will load/save the network architecture temporarily using the text box below.
+  To save this information permanently, you would need to copy and paste the textbox contents
+  into the appropriate section of the index.html file. 
+  </p>
+  <div id="gui2"></div>
+  <br>
+  <textarea id="tt" style="width:100%; height:200px;">
+{"layers":[{"out_depth":4,"out_sx":1,"out_sy":1,"layer_type":"input"},{"out_depth":8,"out_sx":1,"out_sy":1,"layer_type":"fc","num_inputs":4,"l1_decay_mul":0,"l2_decay_mul":1,"filters":[{"sx":1,"sy":1,"depth":4,"w":{"0":0.10769792630638778,"1":0.3018064865449492,"2":0.38089320342994903,"3":0.2436138722318332}},{"sx":1,"sy":1,"depth":4,"w":{"0":0.11543300070352455,"1":-0.9352674832915777,"2":0.3863590352853796,"3":-0.5040136051162512}},{"sx":1,"sy":1,"depth":4,"w":{"0":0.9520157766630789,"1":0.6505336748254125,"2":-0.2410269478958835,"3":0.5130595225406811}},{"sx":1,"sy":1,"depth":4,"w":{"0":-0.19230768708274373,"1":0.9667660205165131,"2":0.6857688410939281,"3":-0.11028383965306364}},{"sx":1,"sy":1,"depth":4,"w":{"0":-0.3012418664382607,"1":0.22467230621986709,"2":0.09479948854665159,"3":0.05167030877341012}},{"sx":1,"sy":1,"depth":4,"w":{"0":-0.007660971814937323,"1":0.4733986990733736,"2":0.121418112900516,"3":0.6158738003186472}},{"sx":1,"sy":1,"depth":4,"w":{"0":0.6667398446109627,"1":-0.3019575762836113,"2":0.09757176667006806,"3":-0.6814444274228681}},{"sx":1,"sy":1,"depth":4,"w":{"0":-0.45195220725916607,"1":-0.13412974736665342,"2":0.6728744035543379,"3":0.5101083081227004}}],"biases":{"sx":1,"sy":1,"depth":8,"w":{"0":0.2005668003485835,"1":0.02000396062644314,"2":0.05425927163229117,"3":0.010794634033874949,"4":-0.04292925662730537,"5":-0.05583852245089965,"6":-0.34053515062222256,"7":0.130657709383979}}},{"out_depth":8,"out_sx":1,"out_sy":1,"layer_type":"tanh"},{"out_depth":3,"out_sx":1,"out_sy":1,"layer_type":"fc","num_inputs":8,"l1_decay_mul":0,"l2_decay_mul":1,"filters":[{"sx":1,"sy":1,"depth":8,"w":{"0":0.09541354524709622,"1":-0.6883880763896666,"2":0.2652591456931737,"3":0.4268520527813884,"4":-0.20100036462358437,"5":0.031498846423496464,"6":-0.281892444486945,"7":0.14002574399005976}},{"sx":1,"sy":1,"depth":8,"w":{"0":-0.10272795704498368,"1":-0.31044760471950916,"2":0.5550409787557278,"3":0.34264887107949704,"4":-0.21078525232546685,"5":0.14795585034223785,"6":-0.6015530244079512,"7":0.0021038094696650507}},{"sx":1,"sy":1,"depth":8,"w":{"0":0.22997091530789338,"1":-0.7697461877257481,"2":0.30657527530821166,"3":0.14639141606941433,"4":0.2480097217970021,"5":-0.07578386295758471,"6":-0.07618682413741451,"7":0.18903180543282136}}],"biases":{"sx":1,"sy":1,"depth":3,"w":{"0":0.08140608193993049,"1":0.031115623600369416,"2":0.16209240183101803}}},{"out_depth":3,"out_sx":1,"out_sy":1,"layer_type":"regression","num_inputs":3}]}  </textarea>
+  </body>
+</html>

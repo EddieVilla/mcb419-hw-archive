@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
+    <script src="https://mcb419.github.io/js/mplot.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <script src="Bot.js"></script>
+    <script src="Pellet.js"></script>
+    <script src="sketch.js"></script>
+  </head>
+  <body>
+    <h2>MCB 419 - HW03 - wandering behavior</h2>
+    <div id="canvas"></div>
+    wanderNoise: <input id="noise" value="0.3" size="5" oninput="setNoise()">
+    <button id="reset" onclick="reset()">Reset</button>
+    <button id="run" onclick="run()">Run</button>
+    <button id="stop" onclick="stop()">Stop</button>
+    <input type="checkbox" id="warp">Warp speed
+    <br>
+    <span style="padding-right:30px">&nbsp;</span>
+    <button id="addpt" onclick="addPoint()">Add Data Point</button>
+    <button id="clf" onclick="clf()">Clear Figure</button>
+    <br>
+    <canvas id="fig1" width="400" height="300"></canvas>
+    <h3>Questions
+    <user>(answer these by editing the index.html file before you submit)</user>
+    </h3>
+    <ol>
+    <li>When the bot moves in a straght line it sweeps out a rectangular path with a width equal
+        to the bot diameter and a length equal to the distance traveled (velocity times time). Using the
+        density of pellets in the arena, compute the average energy collected per unit time for such a 
+        path, ignoring the effects of boundaries.
+      <br>
+      <user>pellet density = 100 pellets/(400 px * 400 px) = 0.000625 pellets / px<sup>2</sup><br>
+        bot area covered per tick = diameter * speed = 40 px * (3 px/tick) = 120 px<sup>2</sup>/tick<br>
+      expected pellets per tick = 120*100/(400*400) = 0.075 pellets/tick</user>
+    </li>
+    <li>Based on your analysis, approximately what value of wanderNoise appears to be optimal?<br>
+      <user>0.4-0.5</user>
+    </li>
+      <li>How does the measured foraging efficiency at the optimal noise level compare to the theoretical
+        value calculated in question 1? Why are these values different?<br>
+      <user>measured around 0.045 pellets per tick; this is lower than theoretical value of 0.075 due to inefficiencies associated with boundaries and trajectory overlap</user>
+    </li>
+    <li>Why does foraging efficiency decrease at lower values of wanderNoise relative to the optimum?<br>
+      <user>at low wanderNoise, the bot spends more time stuck at the boundaries</user>
+      </li>
+    <li>Why does foraging efficiency decrease at higher values of wanderNoise relative to the optimum?<br>
+      <user>at high wanderNoise, the bot trajectory is compact and overlaps areas that have already been explored</user>
+      </li>
+    </ol>
+  </body>
+</html>
